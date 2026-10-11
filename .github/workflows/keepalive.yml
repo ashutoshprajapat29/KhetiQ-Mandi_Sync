@@ -1,0 +1,16 @@
+name: Scheduled Workflow Keepalive
+
+on:
+  schedule:
+    # Runs on the 1st of every month at midnight UTC to prevent GitHub from disabling scheduled cron jobs
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Keepalive Workflow
+        uses: gautamkrishnar/keepalive-workflow@v2

@@ -1,0 +1,20 @@
+{
+  "name": "khetiq-mandi-sync",
+  "version": "1.0.0",
+  "description": "Autonomous Agmarknet 2.0 Mandi Bhav Sync Engine for KhetiQ",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test:captcha": "node src/captcha.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@google/genai": "^1.29.0",
+    "@supabase/supabase-js": "^2.107.0",
+    "axios": "^1.7.9"
+  },
+  "private": false,
+  "license": "MIT"
+}

@@ -1,0 +1,56 @@
+name: Agmarknet Mandi Sync
+
+on:
+  schedule:
+    # ── Scheduled Checkpoints in IST (GitHub Actions runs in UTC) ──
+    # 07:30 UTC = 01:00 PM IST
+    # 12:30 UTC = 06:00 PM IST
+    # 14:30 UTC = 08:00 PM IST
+    - cron: '30 7,12,14 * * *'
+    # 18:00 UTC = 11:30 PM IST (Final EOD Sync)
+    - cron: '0 18 * * *'
+
+  workflow_dispatch:
+    inputs:
+      start_date:
+        description: 'Start Date (YYYY-MM-DD) [Default: Today in IST]'
+        required: false
+        default: ''
+      end_date:
+        description: 'End Date (YYYY-MM-DD) [Default: Same as Start Date]'
+        required: false
+        default: ''
+      states:
+        description: 'Specific states (e.g. "madhya pradesh,rajasthan" or "all") [Default: 8 Core Northern States]'
+        required: false
+        default: ''
+
+concurrency:
+  group: mandi-sync-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Execute Mandi Sync
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          node src/index.js "${{ github.event.inputs.start_date }}" "${{ github.event.inputs.end_date }}" "${{ github.event.inputs.states }}"
