@@ -1,7 +1,7 @@
 /**
  * captcha.js
  * ─────────────────────────────────────────────────────────────────────────────
- * AI-powered CAPTCHA solver using Google Gemini 3.1 Flash Lite.
+ * Hybrid CAPTCHA solver: Instant Plaintext Audio API with Gemini Vision Fallback.
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
@@ -9,8 +9,10 @@ const axios = require("axios");
 const { AGMARKNET_HEADERS } = require("./config");
 
 /**
- * Fetches a fresh CAPTCHA challenge from Agmarknet and solves it via Gemini Vision.
- * @param {import("@google/genai").GoogleGenAI} ai
+ * Fetches a fresh CAPTCHA challenge from Agmarknet and solves it.
+ * Primary: Instant plaintext lookup via accessibility endpoint (0 AI tokens, ~150ms).
+ * Fallback: Google Gemini 3.1 Flash Lite multimodal vision inference.
+ * @param {import("@google/genai").GoogleGenAI} [ai]
  * @returns {Promise<{ captcha_key: string, captcha: string }>}
  */
 async function getSolvedCaptcha(ai) {
@@ -29,6 +31,28 @@ async function getSolvedCaptcha(ai) {
   const { captcha_key, captcha_image } = capResp.data || {};
   if (!captcha_key || !captcha_image) {
     throw new Error("Invalid response received from Agmarknet captcha generator.");
+  }
+
+  // 1. Fast Path: Instant plaintext extraction via accessibility endpoint (0 AI tokens, ~150ms)
+  try {
+    const audioResp = await axios.get(
+      `https://api.agmarknet.gov.in/v1/captcha/getaudio/${captcha_key}`,
+      {
+        headers: AGMARKNET_HEADERS,
+        timeout: 10000,
+      }
+    );
+    const audioText = (audioResp.data?.audio_text || "").trim();
+    if (audioText && audioText.length >= 4 && audioText.length <= 8) {
+      return { captcha_key, captcha: audioText };
+    }
+  } catch (_audioErr) {
+    // If audio endpoint fails, gracefully fall through to Gemini Vision
+  }
+
+  // 2. Fallback Path: Gemini Vision Inference
+  if (!ai) {
+    throw new Error("Agmarknet audio captcha unavailable and Gemini AI instance is not configured for fallback.");
   }
 
   const response = await ai.models.generateContent({
@@ -65,12 +89,8 @@ async function getSolvedCaptcha(ai) {
 if (require.main === module) {
   const { GoogleGenAI } = require("@google/genai");
   const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    console.error("❌ GEMINI_API_KEY environment variable is required.");
-    process.exit(1);
-  }
-  const ai = new GoogleGenAI({ apiKey });
-  console.log("Testing Agmarknet CAPTCHA generation and solving with gemini-3.1-flash-lite...");
+  const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+  console.log("Testing Agmarknet CAPTCHA generation with hybrid solver...");
   getSolvedCaptcha(ai)
     .then(({ captcha_key, captcha }) => {
       console.log(`✅ Success! Key: ${captcha_key} | Solved: "${captcha}"`);
