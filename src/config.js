@@ -6,7 +6,8 @@
  */
 
 /**
- * Core Northern & Central Agricultural States (Primary automated sync target)
+ * Priority Agricultural & Strategic States (Primary automated sync target)
+ * Includes major northern, central, southern, and eastern agricultural producers.
  */
 const CORE_NORTHERN_STATES = [
   { id: 19, name: "Madhya Pradesh" },
@@ -17,10 +18,22 @@ const CORE_NORTHERN_STATES = [
   { id: 5,  name: "Bihar" },
   { id: 11, name: "Gujarat" },
   { id: 20, name: "Maharashtra" },
+  { id: 25, name: "Delhi" },
+  { id: 13, name: "Himachal Pradesh" },
+  { id: 6,  name: "Chandigarh" },
+  { id: 35, name: "Uttarakhand" },
+  { id: 31, name: "Tamil Nadu" },
+  { id: 16, name: "Karnataka" },
+  { id: 2,  name: "Andhra Pradesh" },
+  { id: 32, name: "Telangana" },
+  { id: 36, name: "West Bengal" },
+  { id: 7,  name: "Chattisgarh" },
+  { id: 26, name: "Odisha" },
+  { id: 17, name: "Kerala" },
 ];
 
 /**
- * Complete Agmarknet 2.0 State ID mapping for all states & UTs
+ * Complete Agmarknet 2.0 State ID mapping for all 33 states & UTs
  */
 const ALL_AGMARKNET_STATES = [
   { id: 19, name: "Madhya Pradesh" },
@@ -67,6 +80,7 @@ const AGMARKNET_HEADERS = {
 
 module.exports = {
   CORE_NORTHERN_STATES,
+  PRIORITY_AGRICULTURAL_STATES: CORE_NORTHERN_STATES,
   ALL_AGMARKNET_STATES,
   AGMARKNET_HEADERS,
 };
