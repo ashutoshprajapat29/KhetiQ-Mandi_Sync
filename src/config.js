@@ -7,7 +7,7 @@
 
 /**
  * Core Northern & Central Agricultural States (Primary automated sync target: 10 states/UTs)
- * 8 Core States + Delhi & Chandigarh
+ * 8 Core States + Delhi
  */
 const CORE_NORTHERN_STATES = [
   { id: 19, name: "Madhya Pradesh" },
@@ -19,7 +19,6 @@ const CORE_NORTHERN_STATES = [
   { id: 11, name: "Gujarat" },
   { id: 20, name: "Maharashtra" },
   { id: 25, name: "Delhi" },
-  { id: 6,  name: "Chandigarh" },
 ];
 
 /**
@@ -47,7 +46,6 @@ const ALL_AGMARKNET_STATES = [
   { id: 4,  name: "Assam" },
   { id: 15, name: "Jharkhand" },
   { id: 25, name: "Delhi" },
-  { id: 6,  name: "Chandigarh" },
   { id: 14, name: "Jammu and Kashmir" },
   { id: 10, name: "Goa" },
   { id: 33, name: "Tripura" },
