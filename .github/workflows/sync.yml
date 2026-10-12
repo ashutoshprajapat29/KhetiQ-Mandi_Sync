@@ -2,12 +2,16 @@ name: Agmarknet Mandi Sync
 
 on:
   schedule:
-    # ── Scheduled Checkpoints in IST (GitHub Actions runs in UTC) ──
-    # 07:30 UTC = 01:00 PM IST
-    # 12:30 UTC = 06:00 PM IST
-    # 14:30 UTC = 08:00 PM IST
-    - cron: '30 7,12,14 * * *'
-    # 18:00 UTC = 11:30 PM IST (Final EOD Sync)
+    # ── 5 Daily Checkpoints in IST (GitHub Actions runs in UTC) ──
+    # Wave 1: 01:00 PM IST (07:30 UTC) - Morning auctions
+    - cron: '30 7 * * *'
+    # Wave 2: 03:45 PM IST (10:15 UTC) - Afternoon active auctions
+    - cron: '15 10 * * *'
+    # Wave 3: 06:30 PM IST (13:00 UTC) - Evening auction closing
+    - cron: '0 13 * * *'
+    # Wave 4: 08:30 PM IST (15:00 UTC) - Night returns consolidation
+    - cron: '0 15 * * *'
+    # Wave 5: 11:30 PM IST (18:00 UTC) - Final EOD Sync & Freeze
     - cron: '0 18 * * *'
 
   workflow_dispatch:
@@ -21,7 +25,7 @@ on:
         required: false
         default: ''
       states:
-        description: 'Specific states (e.g. "madhya pradesh,rajasthan" or "all") [Default: 8 Core Northern States]'
+        description: 'Specific states (e.g. "madhya pradesh,rajasthan" or "all") [Default: 10 Core Priority States]'
         required: false
         default: ''
 
