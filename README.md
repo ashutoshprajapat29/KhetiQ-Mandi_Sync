@@ -27,20 +27,21 @@ KhetiQ Web & Android App
 
 ## Sync Schedule (IST)
 
-The workflow runs **4 times daily** at strategic APMC mandi trading checkpoints:
+The workflow runs **5 times daily** at strategic APMC mandi trading checkpoints (optimized with off-peak minute offsets to ensure reliable GitHub Actions execution):
 
-| Sync Window | UTC Cron | IST Time | Purpose |
+| Sync Window | UTC Cron | IST Time | APMC Phase / Purpose |
 | :--- | :--- | :--- | :--- |
-| **Mid-Day** | `30 7 * * *` | **1:00 PM IST** | Early morning arrivals & opening prices |
-| **Post-Mandi** | `30 12 * * *` | **6:00 PM IST** | Major afternoon trade closures |
-| **Evening** | `30 14 * * *` | **8:00 PM IST** | Late market auctions & evening trade |
-| **EOD Final** | `0 18 * * *` | **11:30 PM IST** | Comprehensive EOD sync |
+| **Wave 1** | `15 7 * * *` | **12:45 PM IST** | Morning auctions & early arrivals |
+| **Wave 2** | `10 10 * * *` | **03:40 PM IST** | Afternoon active trading sessions |
+| **Wave 3** | `48 12 * * *` | **06:18 PM IST** | Evening auction closing rates |
+| **Wave 4** | `48 14 * * *` | **08:18 PM IST** | Rural night returns & consolidation |
+| **Wave 5** | `48 17 * * *` | **11:18 PM IST** | Final EOD reconciliation & freeze |
 
 ---
 
 ## Covered Priority States
 
-By default, the engine covers the **8 core agricultural states**:
+By default, the engine covers the core northern and central agricultural belt:
 1. Madhya Pradesh (id: 19)
 2. Uttar Pradesh (id: 34)
 3. Rajasthan (id: 29)
@@ -49,6 +50,7 @@ By default, the engine covers the **8 core agricultural states**:
 6. Bihar (id: 5)
 7. Gujarat (id: 11)
 8. Maharashtra (id: 20)
+9. Delhi (id: 25)
 
 *(Any state or all 33 Indian states can be targeted on demand via manual trigger).*
 

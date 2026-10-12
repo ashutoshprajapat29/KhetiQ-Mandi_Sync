@@ -2,17 +2,17 @@ name: Agmarknet Mandi Sync
 
 on:
   schedule:
-    # ── 5 Daily Checkpoints in IST (GitHub Actions runs in UTC) ──
-    # Wave 1: 01:00 PM IST (07:30 UTC) - Morning auctions
-    - cron: '30 7 * * *'
-    # Wave 2: 03:45 PM IST (10:15 UTC) - Afternoon active auctions
-    - cron: '15 10 * * *'
-    # Wave 3: 06:30 PM IST (13:00 UTC) - Evening auction closing
-    - cron: '0 13 * * *'
-    # Wave 4: 08:30 PM IST (15:00 UTC) - Night returns consolidation
-    - cron: '0 15 * * *'
-    # Wave 5: 11:30 PM IST (18:00 UTC) - Final EOD Sync & Freeze
-    - cron: '0 18 * * *'
+    # -- 5 Daily Checkpoints in IST (GitHub Actions runs in UTC) --
+    # Wave 1: 12:45 PM IST (07:15 UTC) - Morning auctions
+    - cron: '15 7 * * *'
+    # Wave 2: 03:40 PM IST (10:10 UTC) - Afternoon active auctions
+    - cron: '10 10 * * *'
+    # Wave 3: 06:18 PM IST (12:48 UTC) - Evening auction closing
+    - cron: '48 12 * * *'
+    # Wave 4: 08:18 PM IST (14:48 UTC) - Night returns consolidation
+    - cron: '48 14 * * *'
+    # Wave 5: 11:18 PM IST (17:48 UTC) - Final EOD Sync & Freeze
+    - cron: '48 17 * * *'
 
   workflow_dispatch:
     inputs:
