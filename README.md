@@ -27,15 +27,16 @@ KhetiQ Web & Android App
 
 ## Sync Schedule (IST)
 
-The workflow runs **5 times daily** at strategic APMC mandi trading checkpoints (optimized with off-peak minute offsets to ensure reliable GitHub Actions execution):
+The workflow runs **6 times daily** at strategic APMC mandi trading checkpoints (optimized with off-peak minute offsets to ensure reliable GitHub Actions execution):
 
 | Sync Window | UTC Cron | IST Time | APMC Phase / Purpose |
 | :--- | :--- | :--- | :--- |
-| **Wave 1** | `15 7 * * *` | **12:45 PM IST** | Morning auctions & early arrivals |
-| **Wave 2** | `10 10 * * *` | **03:40 PM IST** | Afternoon active trading sessions |
-| **Wave 3** | `48 12 * * *` | **06:18 PM IST** | Evening auction closing rates |
-| **Wave 4** | `48 14 * * *` | **08:18 PM IST** | Rural night returns & consolidation |
-| **Wave 5** | `48 17 * * *` | **11:18 PM IST** | Final EOD reconciliation & freeze |
+| **Wave 1** | `23 5 * * *` | **10:53 AM IST** | Early morning arrivals & opening prices |
+| **Wave 2** | `15 7 * * *` | **12:45 PM IST** | Morning auctions & early arrivals |
+| **Wave 3** | `10 10 * * *` | **03:40 PM IST** | Afternoon active trading sessions |
+| **Wave 4** | `48 12 * * *` | **06:18 PM IST** | Evening auction closing rates |
+| **Wave 5** | `48 14 * * *` | **08:18 PM IST** | Rural night returns & consolidation |
+| **Wave 6** | `48 17 * * *` | **11:18 PM IST** | Final EOD reconciliation & freeze |
 
 ---
 
