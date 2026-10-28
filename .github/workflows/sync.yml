@@ -2,18 +2,22 @@ name: Agmarknet Mandi Sync
 
 on:
   schedule:
-    # -- 6 Daily Checkpoints in IST (GitHub Actions runs in UTC) --
-    # Wave 1: 10:53 AM IST (05:23 UTC) - Early morning arrivals & opening rates
+    # -- Daily Checkpoints in IST (Compensated for GitHub Actions ~5h queue latency) --
+    # Early Morning Wave A: 06:48 AM IST (01:18 UTC) -> Actually executes ~12:00 PM - 12:30 PM IST (Midday arrivals)
+    - cron: '18 1 * * *'
+    # Early Morning Wave B: 07:48 AM IST (02:18 UTC) -> Actually executes ~01:00 PM - 01:30 PM IST (Lunchtime auctions)
+    - cron: '18 2 * * *'
+    # Wave 1: 10:53 AM IST (05:23 UTC) -> Actually executes ~04:15 PM - 04:45 PM IST (Afternoon active auctions)
     - cron: '23 5 * * *'
-    # Wave 2: 12:45 PM IST (07:15 UTC) - Morning auctions
+    # Wave 2: 12:45 PM IST (07:15 UTC) -> Actually executes ~06:40 PM - 07:40 PM IST (Evening closing rates)
     - cron: '15 7 * * *'
-    # Wave 3: 03:40 PM IST (10:10 UTC) - Afternoon active auctions
+    # Wave 3: 03:40 PM IST (10:10 UTC) -> Actually executes ~09:20 PM - 10:15 PM IST (Night returns consolidation)
     - cron: '10 10 * * *'
-    # Wave 4: 06:18 PM IST (12:48 UTC) - Evening auction closing
+    # Wave 4: 06:18 PM IST (12:48 UTC) -> Actually executes ~11:50 PM - 12:20 AM IST (Midnight wrap-up)
     - cron: '48 12 * * *'
-    # Wave 5: 08:18 PM IST (14:48 UTC) - Night returns consolidation
+    # Wave 5: 08:18 PM IST (14:48 UTC) -> Actually executes ~01:10 AM - 01:40 AM IST (Late night returns freeze)
     - cron: '48 14 * * *'
-    # Wave 6: 11:18 PM IST (17:48 UTC) - Final EOD Sync & Freeze
+    # Wave 6: 11:18 PM IST (17:48 UTC) -> Actually executes ~02:30 AM - 03:26 AM IST (Final EOD Sync & Freeze)
     - cron: '48 17 * * *'
 
   workflow_dispatch:

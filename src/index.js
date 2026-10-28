@@ -62,14 +62,37 @@ async function main() {
   console.log("  KHETIQ — AGMARKNET 2.0 AUTONOMOUS MANDI SYNC ENGINE");
   console.log("═══════════════════════════════════════════════════════════════\n");
 
-  // Determine target dates (default: today in IST)
+  // Determine target dates (default: today in IST, or yesterday if delayed past midnight)
   const now = new Date();
   const istNow = new Date(now.getTime() + 5.5 * 60 * 60 * 1000);
-  const todayIST = istNow.toISOString().split("T")[0];
+  const istHour = istNow.getUTCHours();
+  const istMinute = istNow.getUTCMinutes();
+  const istTimeString = `${String(istHour).padStart(2, "0")}:${String(istMinute).padStart(2, "0")} IST`;
 
-  const startDate = process.argv[2] || todayIST;
-  const endDate = process.argv[3] || startDate;
-  const stateArg = process.argv[4] || null;
+  let defaultDate = istNow.toISOString().split("T")[0];
+  let isEarlyMorningRollover = false;
+
+  // If executing between 00:00 and 06:00 AM IST (late-night/EOD waves delayed past midnight by GitHub queues),
+  // target yesterday's date because mandis are closed and today's arrivals have not begun yet.
+  if (istHour < 6) {
+    const yesterdayIST = new Date(istNow.getTime() - 24 * 60 * 60 * 1000);
+    defaultDate = yesterdayIST.toISOString().split("T")[0];
+    isEarlyMorningRollover = true;
+  }
+
+  const rawStart = (process.argv[2] || "").trim();
+  const rawEnd = (process.argv[3] || "").trim();
+  const rawState = (process.argv[4] || "").trim();
+
+  const startDate = rawStart || defaultDate;
+  const endDate = rawEnd || startDate;
+  const stateArg = rawState || null;
+
+  if (isEarlyMorningRollover && !rawStart) {
+    console.log(`🌙 Early Morning Execution detected (${istTimeString}): Defaulting target date to yesterday (${defaultDate}) for complete EOD closing rates.\n`);
+  } else {
+    console.log(`☀️  Execution Time: ${istTimeString} | Base Date: ${defaultDate}\n`);
+  }
 
   const dates = getDateList(startDate, endDate);
   console.log(`📅 Target Dates: ${startDate} to ${endDate} (${dates.length} day(s))`);
